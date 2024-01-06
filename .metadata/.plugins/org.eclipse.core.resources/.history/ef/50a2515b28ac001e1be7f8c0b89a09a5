@@ -1,0 +1,86 @@
+package service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import repository.PessoaRepository;
+import entity.Pessoa;
+import entity.Telefone;
+import dto.PessoaDTO;
+import dto.TelefoneDTO;
+import dto.MessageResponseDTO;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class PessoaService {
+
+    @Autowired
+    private PessoaRepository pessoaRepository;
+
+    public MessageResponseDTO criarPessoa(PessoaDTO pessoaDTO) {
+        Pessoa pessoa = convertToEntity(pessoaDTO);
+        Pessoa pessoaSalva = pessoaRepository.save(pessoa);
+        return MessageResponseDTO.builder()
+            .message("Pessoa criada com ID " + pessoaSalva.getId())
+            .build();
+    }
+
+    public List<PessoaDTO> listarTodos() {
+        List<Pessoa> todasPessoas = pessoaRepository.findAll();
+        return todasPessoas.stream().map(this::convertToDTO).collect(Collectors.toList());
+    }
+
+    public PessoaDTO encontrarPorId(Long id) throws PessoaNotFoundException {
+        Pessoa pessoa = pessoaRepository.findById(id)
+            .orElseThrow(() -> new PessoaNotFoundException(id));
+        return convertToDTO(pessoa);
+    }
+
+    public MessageResponseDTO atualizarPorId(Long id, PessoaDTO pessoaDTO) throws PessoaNotFoundException {
+        pessoaRepository.findById(id)
+            .orElseThrow(() -> new PessoaNotFoundException(id));
+
+        Pessoa pessoaAtualizada = pessoaRepository.save(convertToEntity(pessoaDTO));
+        return MessageResponseDTO.builder()
+            .message("Pessoa atualizada com ID " + pessoaAtualizada.getId())
+            .build();
+    }
+
+    public void deletar(Long id) throws PessoaNotFoundException {
+        pessoaRepository.findById(id)
+            .orElseThrow(() -> new PessoaNotFoundException(id));
+        pessoaRepository.deleteById(id);
+    }
+
+    private PessoaDTO convertToDTO(Pessoa pessoa) {
+        List<TelefoneDTO> telefonesDTO = pessoa.getTelefones().stream()
+            .map(tel -> new TelefoneDTO(tel.getId(), tel.getTipo(), tel.getNumero()))
+            .collect(Collectors.toList());
+
+        return PessoaDTO.builder()
+            .id(pessoa.getId())
+            .primeiroNome(pessoa.getPrimeiroNome())
+            .sobrenome(pessoa.getSobrenome())
+            .cpf(pessoa.getCpf())
+            .dataNascimento(pessoa.getDataNascimento())
+            .telefones(telefonesDTO)
+            .build();
+    }
+
+    private Pessoa convertToEntity(PessoaDTO pessoaDTO) {
+        List<Telefone> telefones = pessoaDTO.getTelefones().stream()
+            .map(telDTO -> new Telefone(telDTO.getId(), telDTO.getTipo(), telDTO.getNumero()))
+            .collect(Collectors.toList());
+
+        return Pessoa.builder()
+            .id(pessoaDTO.getId())
+            .primeiroNome(pessoaDTO.getPrimeiroNome())
+            .sobrenome(pessoaDTO.getSobrenome())
+            .cpf(pessoaDTO.getCpf())
+            .dataNascimento(pessoaDTO.getDataNascimento())
+            .telefones(telefones)
+            .build();
+    }
+}

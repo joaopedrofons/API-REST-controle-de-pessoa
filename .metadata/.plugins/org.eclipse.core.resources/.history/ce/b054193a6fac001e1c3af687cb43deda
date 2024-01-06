@@ -1,0 +1,19 @@
+package dto;
+
+import lombok.*;
+import java.time.LocalDate;
+import java.util.List;
+
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class PessoaDTO {
+
+    private Long id;
+    private String primeiroNome;
+    private String sobrenome;
+    private String cpf;
+    private LocalDate dataNascimento;
+    private List<TelefoneDTO> telefones;
+}

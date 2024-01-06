@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;zip&apos; to &apos;main&apos;" description="Rename resource &apos;zip&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="/zip" name="main" stamp="1704406958377" updateReferences="true"/>
+</session>

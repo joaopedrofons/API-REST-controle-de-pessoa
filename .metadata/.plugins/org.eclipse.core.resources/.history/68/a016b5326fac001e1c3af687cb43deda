@@ -1,0 +1,8 @@
+package exception;
+
+public class PessoaNotFoundException extends Exception {
+
+    public PessoaNotFoundException(Long id) {
+        super("Pessoa com ID " + id + " não encontrada");
+    }
+}

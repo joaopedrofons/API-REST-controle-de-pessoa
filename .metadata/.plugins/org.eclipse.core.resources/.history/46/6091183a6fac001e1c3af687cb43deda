@@ -1,0 +1,15 @@
+package dto;
+
+import entity.Telefone.PhoneType;
+import lombok.*;
+
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class TelefoneDTO {
+
+    private Long id;
+    private PhoneType tipo;
+    private String numero;
+}

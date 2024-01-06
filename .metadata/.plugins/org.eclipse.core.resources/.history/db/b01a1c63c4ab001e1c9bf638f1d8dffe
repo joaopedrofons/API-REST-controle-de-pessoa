@@ -1,0 +1,33 @@
+package service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import repository.PessoaRepository;
+
+@Service
+public class PessoaService {
+
+    @Autowired
+    private PessoaRepository pessoaRepository;
+
+    public <MessageResponseDTO, PessoaDTO> MessageResponseDTO criarPessoa(PessoaDTO pessoaDTO) {
+        // Implemente a lógica para criar uma pessoa
+    }
+
+    public List<PessoaDTO> listarTodos() {
+        // Implemente a lógica para listar todas as pessoas
+    }
+
+    public PessoaDTO encontrarPorId(Long id) throws PessoaNotFoundException {
+        // Implemente a lógica para encontrar uma pessoa por ID
+    }
+
+    public MessageResponseDTO atualizarPorId(Long id, PessoaDTO pessoaDTO) throws PessoaNotFoundException {
+        // Implemente a lógica para atualizar uma pessoa por ID
+    }
+
+    public void deletar(Long id) throws PessoaNotFoundException {
+        // Implemente a lógica para deletar uma pessoa por ID
+    }
+}
